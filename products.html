@@ -41,8 +41,10 @@ function renderProducts() {
         <p>₹${p.price}</p>
         <a class="btn" href="${p.link}" target="_blank">Buy Now</a>
 
-        <button onclick="editProduct(${index})">Edit</button>
-        <button onclick="deleteProduct(${index})">Delete</button>
+        ${isAdmin() ? `
+  <button onclick="editProduct(${index})">Edit</button>
+  <button onclick="deleteProduct(${index})">Delete</button>
+` : ""}
       </div>
     `;
   });
@@ -83,6 +85,10 @@ function editProduct(index) {
 }
 
 renderProducts();
+
+function isAdmin() {
+  return localStorage.getItem("isAdmin") === "true";
+}
 </script>
 
   </section>
