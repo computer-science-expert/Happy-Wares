@@ -20,7 +20,10 @@
 <input id="link" placeholder="Affiliate Link">
 
 <button onclick="addProduct()">Add Product</button>
-
+  
+<br><br>
+<button onclick="enableAdmin()">Enable Admin Mode</button>
+  
 <script>
 function addProduct() {
   const product = {
@@ -36,6 +39,11 @@ function addProduct() {
 
   alert("Product Added!");
   name.value = price.value = image.value = link.value = "";
+}
+  
+  function enableAdmin() {
+  localStorage.setItem("isAdmin", "true");
+  alert("Admin mode enabled");
 }
 </script>
 
