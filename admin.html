@@ -16,6 +16,7 @@
 
 <input id="name" placeholder="Product Name">
 <input id="price" placeholder="Price (₹)">
+<input id="category" placeholder="Category (e.g., Electronics)">
 <input id="image" placeholder="Image URL">
 <input id="link" placeholder="Affiliate Link">
 
@@ -28,10 +29,11 @@
 <script>
 function addProduct() {
   const product = {
-    name: name.value,
-    price: price.value,
-    image: image.value,
-    link: link.value
+    name: document.getElementById("name").value,
+    price: document.getElementById("price").value,
+    image: document.getElementById("image").value,
+    link: document.getElementById("link").value,
+    category: document.getElementById("category").value
   };
 
   let products = JSON.parse(localStorage.getItem("products")) || [];
@@ -39,7 +41,11 @@ function addProduct() {
   localStorage.setItem("products", JSON.stringify(products));
 
   alert("Product Added!");
-  name.value = price.value = image.value = link.value = "";
+  document.getElementById("name").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("image").value = "";
+  document.getElementById("link").value = "";
+  document.getElementById("category").value = "";
 }
   
   function adminLogin() {
