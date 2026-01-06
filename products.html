@@ -27,19 +27,62 @@
     <section class="products" id="productList"></section>
 
 <script>
-const products = JSON.parse(localStorage.getItem("products")) || [];
+let products = JSON.parse(localStorage.getItem("products")) || [];
 const container = document.getElementById("productList");
 
-products.forEach(p => {
-  container.innerHTML += `
-    <div class="product">
-      <img src="${p.image}">
-      <h3>${p.name}</h3>
-      <p>₹${p.price}</p>
-      <a class="btn" href="${p.link}" target="_blank">Buy Now</a>
-    </div>
-  `;
-});
+function renderProducts() {
+  container.innerHTML = "";
+
+  products.forEach((p, index) => {
+    container.innerHTML += `
+      <div class="product">
+        <img src="${p.image}" alt="${p.name}">
+        <h3>${p.name}</h3>
+        <p>₹${p.price}</p>
+        <a class="btn" href="${p.link}" target="_blank">Buy Now</a>
+
+        <button onclick="editProduct(${index})">Edit</button>
+        <button onclick="deleteProduct(${index})">Delete</button>
+      </div>
+    `;
+  });
+}
+
+function deleteProduct(index) {
+  if (confirm("Delete this product?")) {
+    products.splice(index, 1);
+    localStorage.setItem("products", JSON.stringify(products));
+    renderProducts();
+  }
+}
+
+function editProduct(index) {
+  const p = products[index];
+
+  const newName = prompt("Edit product name:", p.name);
+  if (newName === null) return;
+
+  const newPrice = prompt("Edit price:", p.price);
+  if (newPrice === null) return;
+
+  const newImage = prompt("Edit image URL:", p.image);
+  if (newImage === null) return;
+
+  const newLink = prompt("Edit affiliate link:", p.link);
+  if (newLink === null) return;
+
+  products[index] = {
+    name: newName,
+    price: newPrice,
+    image: newImage,
+    link: newLink
+  };
+
+  localStorage.setItem("products", JSON.stringify(products));
+  renderProducts();
+}
+
+renderProducts();
 </script>
 
   </section>
