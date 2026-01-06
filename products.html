@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shop | Happy Wares</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <h1>Happy Wares</h1>
+    <p>Shop Smart • Compare Better</p>
+  </header>
+
+  <!-- NAVIGATION -->
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="products.html">Shop</a>
+  </nav>
+
+  <!-- PRODUCTS -->
+  <section class="products">
+
+    <section class="products" id="productList"></section>
+
+<script>
+const products = JSON.parse(localStorage.getItem("products")) || [];
+const container = document.getElementById("productList");
+
+products.forEach(p => {
+  container.innerHTML += `
+    <div class="product">
+      <img src="${p.image}">
+      <h3>${p.name}</h3>
+      <p>₹${p.price}</p>
+      <a class="btn" href="${p.link}" target="_blank">Buy Now</a>
+    </div>
+  `;
+});
+</script>
+
+  </section>
+
+  <!-- FOOTER -->
+ <footer class="footer">
+  <p>© 2026 Happy Wares</p>
+  <p>
+    <a href="affiliate.html">Affiliate Disclosure</a> |
+    <a href="privacy.html">Privacy Policy</a> |
+    <a href="disclaimer.html">Disclaimer</a>
+  </p>
+</footer>
+
+</body>
+</html>

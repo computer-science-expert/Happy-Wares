@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel | Happy Wares</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { width: 100%; padding: 10px; margin: 8px 0; }
+    button { background: black; color: white; border: none; }
+  </style>
+</head>
+<body>
+
+<h2>Add New Product</h2>
+
+<input id="name" placeholder="Product Name">
+<input id="price" placeholder="Price (₹)">
+<input id="image" placeholder="Image URL">
+<input id="link" placeholder="Affiliate Link">
+
+<button onclick="addProduct()">Add Product</button>
+
+<script>
+function addProduct() {
+  const product = {
+    name: name.value,
+    price: price.value,
+    image: image.value,
+    link: link.value
+  };
+
+  let products = JSON.parse(localStorage.getItem("products")) || [];
+  products.push(product);
+  localStorage.setItem("products", JSON.stringify(products));
+
+  alert("Product Added!");
+  name.value = price.value = image.value = link.value = "";
+}
+</script>
+
+</body>
+</html>
