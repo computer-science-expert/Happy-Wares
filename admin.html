@@ -22,8 +22,9 @@
 <button onclick="addProduct()">Add Product</button>
   
 <br><br>
-<button onclick="enableAdmin()">Enable Admin Mode</button>
-  
+<button onclick="adminLogin()">Admin Login</button>
+<button onclick="logout()">Logout</button>  
+
 <script>
 function addProduct() {
   const product = {
@@ -41,9 +42,20 @@ function addProduct() {
   name.value = price.value = image.value = link.value = "";
 }
   
-  function enableAdmin() {
-  localStorage.setItem("isAdmin", "true");
-  alert("Admin mode enabled");
+  function adminLogin() {
+  const password = prompt("Enter admin password:");
+
+  if (password === "hap8874py") {
+    localStorage.setItem("isAdmin", "true");
+    alert("Admin access granted");
+  } else {
+    alert("Wrong password");
+  }
+}
+
+function logout() {
+  localStorage.removeItem("isAdmin");
+  alert("Logged out successfully");
 }
 </script>
 
