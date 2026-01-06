@@ -27,6 +27,12 @@
 <button onclick="logout()">Logout</button>  
 
 <script>
+const password = prompt("Enter admin password to access this page:");
+if(password !== "hap8874py") {
+  alert("Wrong password! Redirecting...");
+  window.location.href = "products.html";
+}
+
 function addProduct() {
   const product = {
     name: document.getElementById("name").value,
