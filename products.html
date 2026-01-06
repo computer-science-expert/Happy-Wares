@@ -29,72 +29,87 @@
 </select>
   
   <!-- PRODUCTS -->
-
+  <section class="products">
+    
     <section class="products" id="productList"></section>
 
 <script>
 let products = JSON.parse(localStorage.getItem("products")) || [];
 const container = document.getElementById("productList");
+const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
 
+function isAdmin() {
+  return localStorage.getItem("isAdmin") === "true";
+}
+
+// Populate category filter dynamically
+const categories = [...new Set(products.map(p => p.category).filter(c => c))];
+categories.forEach(cat => {
+  categoryFilter.innerHTML += `<option value="${cat}">${cat}</option>`;
+});
+
+// Render products
 function renderProducts() {
+  const searchTerm = searchInput.value.toLowerCase();
+  const selectedCategory = categoryFilter.value;
+
   container.innerHTML = "";
 
   products.forEach((p, index) => {
-    container.innerHTML += `
-      <div class="product">
-        <img src="${p.image}" alt="${p.name}">
-        <h3>${p.name}</h3>
-        <p>₹${p.price}</p>
-        <a class="btn" href="${p.link}" target="_blank">Buy Now</a>
-
-        ${isAdmin() ? `
-  <button onclick="editProduct(${index})">Edit</button>
-  <button onclick="deleteProduct(${index})">Delete</button>
-` : ""}
-      </div>
-    `;
+    if(
+      (selectedCategory === "All" || p.category === selectedCategory) &&
+      p.name.toLowerCase().includes(searchTerm)
+    ){
+      container.innerHTML += `
+        <div class="product">
+          <img src="${p.image}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <p>₹${p.price}</p>
+          <a class="btn" href="${p.link}" target="_blank">Buy Now</a>
+          ${isAdmin() ? `<button onclick="editProduct(${index})">Edit</button>
+          <button onclick="deleteProduct(${index})">Delete</button>` : ""}
+        </div>
+      `;
+    }
   });
 }
 
+// Edit & Delete functions
+function editProduct(index) {
+  if(!isAdmin()) return;
+  const p = products[index];
+  const name = prompt("Edit product name:", p.name);
+  if(name === null) return;
+  const price = prompt("Edit price:", p.price);
+  if(price === null) return;
+  const image = prompt("Edit image URL:", p.image);
+  if(image === null) return;
+  const link = prompt("Edit affiliate link:", p.link);
+  if(link === null) return;
+  const category = prompt("Edit category:", p.category);
+  if(category === null) return;
+
+  products[index] = { name, price, image, link, category };
+  localStorage.setItem("products", JSON.stringify(products));
+  renderProducts();
+}
+
 function deleteProduct(index) {
-  if (confirm("Delete this product?")) {
-    products.splice(index, 1);
+  if(!isAdmin()) return;
+  if(confirm("Delete this product?")) {
+    products.splice(index,1);
     localStorage.setItem("products", JSON.stringify(products));
     renderProducts();
   }
 }
 
-function editProduct(index) {
-  const p = products[index];
+// Event listeners for search and filter
+searchInput.addEventListener("input", renderProducts);
+categoryFilter.addEventListener("change", renderProducts);
 
-  const newName = prompt("Edit product name:", p.name);
-  if (newName === null) return;
-
-  const newPrice = prompt("Edit price:", p.price);
-  if (newPrice === null) return;
-
-  const newImage = prompt("Edit image URL:", p.image);
-  if (newImage === null) return;
-
-  const newLink = prompt("Edit affiliate link:", p.link);
-  if (newLink === null) return;
-
-  products[index] = {
-    name: newName,
-    price: newPrice,
-    image: newImage,
-    link: newLink
-  };
-
-  localStorage.setItem("products", JSON.stringify(products));
-  renderProducts();
-}
-
+// Initial render
 renderProducts();
-
-function isAdmin() {
-  return localStorage.getItem("isAdmin") === "true";
-}
 </script>
 
   </section>
