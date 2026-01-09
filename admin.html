@@ -42,9 +42,44 @@ function addProduct() {
     category: document.getElementById("category").value
   };
 
-  let products = JSON.parse(localStorage.getItem("products")) || [];
-  products.push(product);
-  localStorage.setItem("products", JSON.stringify(products));
+  import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+async function addProduct() {
+  const nameValue = document.getElementById("name").value;
+  const priceValue = document.getElementById("price").value;
+  const imageValue = document.getElementById("image").value;
+  const linkValue = document.getElementById("link").value;
+  const categoryValue = document.getElementById("category").value || "general";
+
+  if (!nameValue || !priceValue || !imageValue || !linkValue) {
+    alert("Please fill all required fields!");
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "products"), {
+      name: nameValue,
+      price: Number(priceValue),
+      image: imageValue,
+      link: linkValue,
+      category: categoryValue,
+      createdAt: serverTimestamp()
+    });
+
+    alert("Product added to Firebase successfully ✅");
+
+    // Clear input fields
+    document.getElementById("name").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("image").value = "";
+    document.getElementById("link").value = "";
+    document.getElementById("category").value = "";
+
+  } catch (error) {
+    console.error("Error adding product: ", error);
+    alert("Failed to add product ❌ Check console for details");
+  }
+}
 
   alert("Product Added!");
   document.getElementById("name").value = "";
