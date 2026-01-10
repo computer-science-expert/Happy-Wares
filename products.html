@@ -112,6 +112,32 @@ categoryFilter.addEventListener("change", renderProducts);
 renderProducts();
 </script>
 
+<script type="module">
+  import { getProducts } from "./firebase.js";
+
+  const container = document.getElementById("products");
+
+  async function loadProducts() {
+    container.innerHTML = "Loading...";
+
+    const products = await getProducts();
+    container.innerHTML = "";
+
+    products.forEach(p => {
+      container.innerHTML += `
+        <div class="product">
+          <img src="${p.image}">
+          <h3>${p.name}</h3>
+          <p>₹${p.price}</p>
+          <a href="${p.link}" target="_blank">Buy Now</a>
+        </div>
+      `;
+    });
+  }
+
+  loadProducts();
+</script>
+
   </section>
 
   <!-- FOOTER -->
