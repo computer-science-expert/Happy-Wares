@@ -71,6 +71,39 @@ function logout() {
   window.location.href = "products.html";
 }
 </script>
+  
+<script type="module">
+  import { addProduct } from "./firebase.js";
 
+  window.addProduct = async function () {
+    const name = document.getElementById("name").value;
+    const price = document.getElementById("price").value;
+    const image = document.getElementById("image").value;
+    const link = document.getElementById("link").value;
+    const category = document.getElementById("category").value || "general";
+
+    if (!name || !price || !image || !link) {
+      alert("Fill all fields");
+      return;
+    }
+
+    await addProduct({
+      name,
+      price: Number(price),
+      image,
+      link,
+      category
+    });
+
+    alert("Product added ✅");
+
+    document.getElementById("name").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("image").value = "";
+    document.getElementById("link").value = "";
+    document.getElementById("category").value = "";
+  };
+</script>
+  
 </body>
 </html>
